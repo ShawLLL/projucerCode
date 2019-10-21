@@ -2,14 +2,15 @@
 #include<assert.h>
 using namespace std;
 
-int isZero(float a) {
-	//²»Îª0
-	if ((int)a !=0||(int)a!=a)
+bool isnotZero(float a) 
+{
+	//if ((int)a != 0 || (int)a != a)
+	if(a!=0.0f)
 	{
-		return 1;
+		return true;
 	}
 	else {
-		return 0;
+		return false;
 	}
 }
 
@@ -20,17 +21,17 @@ std::pair<int, int> getXX(const float* ptr, int len)
 	int left = 0;
 	int right = 0;
 
-	for (int i = 0; i < len;i++)
+	for (int i = 0; i < len; i++)
 	{
-		if (isZero(ptr[i]))
+		if (isnotZero(ptr[i]))
 		{
 			left = i;
 			break;
 		}
 	}
-	for (int i =len-1;i>=left;i--)
+	for (int i = len - 1; i >= left; i--)
 	{
-		if (isZero(ptr[i]))
+		if (isnotZero(ptr[i]))
 		{
 			right = i;
 			if (left == right)
@@ -40,17 +41,16 @@ std::pair<int, int> getXX(const float* ptr, int len)
 			break;
 		}
 	}
-
+	if (!left && !right) 
+	{
+		return std::make_pair(NULL,0);
+	}
 	return std::make_pair(ptr[left], (right - left + 1));
 }
 
-
-int main()
-{
-	float a[] = { 0,0,0,0,0 };
-	
-	getXX(a, 5);
-
+int main() {
+	float a[] = { 0,0,0,1,2,0,0,0,0 };
+	getXX(a, 9);
 	system("pause");
 	return 0;
 }
