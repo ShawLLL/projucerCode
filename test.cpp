@@ -1,56 +1,40 @@
-#include<iostream>
-#include<assert.h>
-using namespace std;
 
-bool isnotZero(float a) 
+#include <JuceHeader.h>
+#include <fstream>
+#include "msgpack11.hpp"
+
+using namespace msgpack11;
+
+int main( int argc, char **argv )
 {
-	//if ((int)a != 0 || (int)a != a)
-	if(a!=0.0f)
-	{
-		return true;
-	}
-	else {
-		return false;
-	}
-}
+    MsgPack my_msgpack = MsgPack::object{
+        { "key1", "value1" },
+        { "key2","1"},
+        { "key3", MsgPack::array{ 1, 2, 3 } },
+    };
 
-std::pair<int, int> getXX(const float* ptr, int len)
-{
-	assert(len);
-	assert(ptr);
-	int left = 0;
-	int right = 0;
+    //access to elements
+    //std::cout << my_msgpack["key1"].string_value();
 
-	for (int i = 0; i < len; i++)
-	{
-		if (isnotZero(ptr[i]))
-		{
-			left = i;
-			break;
-		}
-	}
-	for (int i = len - 1; i >= left; i--)
-	{
-		if (isnotZero(ptr[i]))
-		{
-			right = i;
-			if (left == right)
-			{
-				return std::make_pair(ptr[left], 1);
-			}
-			break;
-		}
-	}
-	if (!left && !right) 
-	{
-		return std::make_pair(NULL,0);
-	}
-	return std::make_pair(ptr[left], (right - left + 1));
-}
+#if 0
+    //serialize
+    std::string msgpack_bytes = my_msgpack.dump();
 
-int main() {
-	float a[] = { 0,0,0,1,2,0,0,0,0 };
-	getXX(a, 9);
-	system("pause");
-	return 0;
+	std::ofstream fileName1( "C:\\Users\\Donkey\\Desktop\\newFile\\3", std::ios::binary );
+    //fileName1.write( msgpack_bytes.data(), msgpack_bytes.size() );
+	fileName1 << msgpack_bytes;
+    fileName1.close();
+#endif	
+	
+	//deserialize
+    std::ifstream fileName( "C:\\Users\\Donkey\\Desktop\\newFile\\3", std::ios::binary );
+   
+    std::string err;
+    MsgPack des_msgpack = MsgPack::parse( fileName , err );
+   
+    std::cout << des_msgpack["key3"].array_items();
+	
+    fileName.close();
+	
+    return 0;
 }
