@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 
+
 using namespace std;
 class Mp3BanzouOffset
 {
@@ -50,7 +51,7 @@ private:
 		}
         move_offset( buffers, best_offset , lengthInsample );
 		
-		//buffersĞ´Èë°é×à
+		//buffersÃÂ´ÃˆÃ«Â°Ã©Ã—Ã 
         StringPairArray tmp = WavAudioFormat::createBWAVMetadata( "nothing", "TBT", "TBT", Time::getCurrentTime(), buffers.getNumSamples(), "" );	
 
 		ScopedPointer<AudioFormatWriter> g = format.createWriterFor( output, sampleRates, buffers.getNumChannels(), 32, tmp, 0 );
